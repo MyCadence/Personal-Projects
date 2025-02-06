@@ -6,3 +6,5 @@
 -Oct. 26, 2024: Merged "README" Feature Branch into Main.  
 -Oct. 27, 2024: Created a "README-branch" Feature Branch.  
 -Oct. 27, 2024: Pushed HTML Overview of Database and HTML Workspace.
+-Feb. 6, 2025: Powershell Script for Login Errors in WinEvent
+-Feb. 6, 2025: Added HTML project - imgs and file paths.
