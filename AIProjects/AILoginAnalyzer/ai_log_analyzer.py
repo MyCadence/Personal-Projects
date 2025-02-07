@@ -1,30 +1,34 @@
+import os
 import openai
 import json
+from datetime import datetime
 
-# Set your OpenAI API key
-openai.api_key = "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"
-# Function to process logs and analyze them using GPT-4o
-def analyze_logs(log_data):
-    # Example prompt to analyze logs using GPT-4o
-    prompt = f"Analyze these security logs and provide insights on potential security risks:\n{log_data}"
-    
-    # Make the API request to OpenAI with GPT-4o
-    response = openai.Completion.create(
-        engine="gpt-4o",  # Specify GPT-4o engine
-        prompt=prompt,
-        max_tokens=150,  # Limit the length of the output
-        temperature=0.7,  # Controls randomness of responses
-    )
+# Retrieve API key from environment variable
+api_key = os.getenv("OPENAI_API_KEY")
+openai.api_key = api_key
 
-    return response.choices[0].text.strip()
+# Load JSON logs with utf-16 encoding to handle BOM markers
+with open("failed_logins.json", "r", encoding="utf-16") as log_file:
+    file_content = log_file.read()  # Read the content as a string
+    print(file_content)  # Check the raw content
 
-# Example: Load the log data (from JSON, PowerShell output, or file)
-log_json = '{"TimeCreated": "2025-02-06 10:00:00", "Message": "Failed login attempt by user Alice"}'
-log_data = json.loads(log_json)
+    logs = json.loads(file_content)  # Parse the JSON data
 
-# Analyze the log data
-insights = analyze_logs(log_data)
+def convert_windows_time(timestamp):
+    return datetime.utcfromtimestamp(int(timestamp) / 1000).strftime('%Y-%m-%d %H:%M:%S')
 
-# Output the results
-print("AI Analysis Results:")
-print(insights)
+# Convert logs to a formatted message for AI processing
+log_text = "\n".join(f"{convert_windows_time(log['TimeCreated'][6:-2])}: {log['Message']}" for log in logs)
+
+# Query OpenAI GPT-4o for analysis
+response = openai.chat.completions.create(
+    model="gpt-4o",
+    messages=[  # List of messages for the conversation
+        {"role": "system", "content": "You are an AI log analyzer. Detect suspicious patterns in failed login attempts."},
+        {"role": "user", "content": f"Analyze these login errors and report any suspicious activity:\n\n{log_text}"}
+    ]
+)
+
+# Print AI analysis
+print("AI Analysis:")
+print(response.choices[0].message.content)
