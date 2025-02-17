@@ -8,6 +8,9 @@ api_key = os.getenv("OPENAI_API_KEY")
 openai.api_key = api_key
 
 # Load JSON logs with utf-16 encoding to handle BOM markers
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+json_path = os.path.join(BASE_DIR, "failed_logins.json")
+
 with open("failed_logins.json", "r", encoding="utf-16") as log_file:
     file_content = log_file.read()  # Read the content as a string
     print(file_content)  # Check the raw content
