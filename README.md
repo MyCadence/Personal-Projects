@@ -8,5 +8,7 @@
 -Oct. 27, 2024: Pushed HTML Overview of Database and HTML Workspace.  
 -Feb. 6, 2025: Powershell Script for Login Errors in WinEvent.  
 -Feb. 6, 2025: Added HTML project - imgs and file paths.  
--Feb. 7, 2025: Completed a working version of AI log analyzer.
--Feb. 17, 2025: Currently unit testing on log analyzer.
+-Feb. 7, 2025: Completed a working version of AI log analyzer.  
+-Feb. 17, 2025: Currently unit testing on log analyzer.  
+-Feb. 25, 2025: Started LLM Evaluation Project.  
+-Feb. 25, 2025: Completed LLM Evaluation Project - added a visualizer.
