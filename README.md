@@ -12,3 +12,4 @@
 -Feb. 17, 2025: Currently unit testing on log analyzer.  
 -Feb. 25, 2025: Started LLM Evaluation Project.  
 -Feb. 25, 2025: Completed LLM Evaluation Project - added a visualizer.
+-Feb. 26, 2025: Started Budgeting Application - working on authentication.  
