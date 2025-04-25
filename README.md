@@ -14,3 +14,4 @@
 -Feb. 25, 2025: Completed LLM Evaluation Project - added a visualizer.  
 -Feb. 26, 2025: Started Budgeting Application - working on authentication.  
 -Feb. 26, 2025: Completed Basic Budgeting Application.  
+-April. 25, 2025: Restructured Directories.  
