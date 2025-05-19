@@ -15,3 +15,4 @@
 -Feb. 26, 2025: Started Budgeting Application - working on authentication.  
 -Feb. 26, 2025: Completed Basic Budgeting Application.  
 -April. 25, 2025: Restructured Directories.  
+-May 18, 2025: Initialized personal site through Github Pages.
