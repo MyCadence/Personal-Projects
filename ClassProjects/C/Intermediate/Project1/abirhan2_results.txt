@@ -1,0 +1,383 @@
+Beginning tests
+
+Test  1 [ 4 points]:
+|-Testing op_create
+|-Initialize the Schedule Header	op_create();
+\_ [ 4/ 4] - Test Completed Normally
+
+Test  2 [ 6 points]:
+|-Testing Generating a new Process with op_new_process
+|-Before (Ready Queue High):
+|-|	None
+|-Generating Process A (PID: 1, Low-Priority: No, Critical: No) with op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-After (Ready Queue High):
+|-|	PID:   1 Command: A State:[  R ]
+\_ [ 6/ 6] - Test Completed Normally
+
+Test  3 [ 6 points]:
+|-Testing Generating a new Critical Process with op_new_process
+|-Before (Ready Queue High):
+|-|	None
+|-Generating Process A (PID: 1, Low-Priority: No, Critical: Yes) with op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [C R ]) with Reference op_create()
+|-After (Ready Queue High):
+|-|	PID:   1 Command: A State:[C R ]
+\_ [ 6/ 6] - Test Completed Normally
+
+Test  4 [ 6 points]:
+|-Testing Generating a new Low Level Process with op_new_process
+|-Before (Ready Queue Low):
+|-|	None
+|-Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-After (Ready Queue Low):
+|-|	PID:   1 Command: A State:[ LR ]
+\_ [ 6/ 6] - Test Completed Normally
+
+Test  5 [18 points]:
+|-Testing op_add on an Empty Ready High List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-Before (Ready High):
+|-|	None
+|-Inserting Process A (PID: 1, State: [  R ]) with op_create()
+|-After (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+\_ [18/18] - Test Completed Normally
+
+Test  6 [18 points]:
+|-Testing op_add at the end of a Ready High List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process B (PID: 2, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-Before (Ready High):
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   1 Command: A State:[  R ]
+|-Inserting Process C (PID: 3, State: [  R ]) with op_create()
+|-After (Ready High):
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+\_ [18/18] - Test Completed Normally
+
+Test  7 [18 points]:
+|-Testing op_add on an Empty Ready Low List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-Before (Ready Low):
+|-|	None
+|-Inserting Process A (PID: 1, State: [ LR ]) with op_create()
+|-After (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+\_ [18/18] - Test Completed Normally
+
+Test  8 [18 points]:
+|-Testing op_add on a Populated Ready Low List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process C (PID: 3, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 2, State: [ LR ]) with Reference op_create()
+|-Before (Ready Low):
+|-|	PID:   3 Command: C State:[ LR ]
+|-|	PID:   2 Command: B State:[ LR ]
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-After (Ready Low):
+|-|	PID:   3 Command: C State:[ LR ]
+|-|	PID:   2 Command: B State:[ LR ]
+|-|	PID:   1 Command: A State:[ LR ]
+\_ [18/18] - Test Completed Normally
+
+Test  9 [10 points]:
+|-Testing op_exited on an Empty Defunct List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-Before (Defunct):
+|-|	None
+|-Ending Process A (PID: 1, State: [  R ]) with op_exited()
+|-After (Defunct):
+|-|	None
+|-[Issue]-A is not in the Defunct List
+|-[Issue]-Expected head -> A
+\_ [ 5/10] - Test Completed Normally
+
+Test 10 [10 points]:
+|-Testing op_terminated From Ready High on a Populated Defunct List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-[Ref] Ending Process B (PID: 2, State: [  R ]) with Reference op_exited()
+|-Before (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-Before (Defunct):
+|-|	PID:   2 Command: B State:[   Z]
+|-Terminating Process with PID: 1 with op_terminated()
+\_ [ 0/10] - Test Aborted - SEGFAULT Detected
+
+Test 11 [10 points]:
+|-Testing op_terminated From Ready Low on an Empty Defunct List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-Before (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+|-Before (Defunct):
+|-|	None
+|-Terminating Process with PID: 1 with op_terminated()
+|-After (Ready Low):
+|-|	None
+|-After (Defunct):
+|-|	None
+|-[Issue]-A is not in the Defunct List
+|-[Issue]-Expected head -> A
+\_ [ 6/10] - Test Completed Normally
+
+Test 12 [18 points]:
+|-Testing op_select on a One Item Ready High List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-Before (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-Selecting from Ready Queue - High with op_select()
+|-After (Ready High):
+|-|	None
+\_ [18/18] - Test Completed Normally
+
+Test 13 [18 points]:
+|-Testing op_select on a Multiple Item Ready High List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process D (PID: 4, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 2, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process C (PID: 3, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process D (PID: 4, State: [  R ]) with Reference op_create()
+|-Before (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+|-|	PID:   4 Command: D State:[  R ]
+|-Selecting from Ready Queue - High with op_select()
+|-After (Ready High):
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+|-|	PID:   4 Command: D State:[  R ]
+\_ [18/18] - Test Completed Normally
+
+Test 14 [18 points]:
+|-Testing op_select on a Ready High List with first Node Critical.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: Yes) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process D (PID: 4, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [C R ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 2, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process C (PID: 3, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process D (PID: 4, State: [  R ]) with Reference op_create()
+|-Before (Ready High):
+|-|	PID:   1 Command: A State:[C R ]
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+|-|	PID:   4 Command: D State:[  R ]
+|-Selecting from Ready Queue - High with op_select()
+|-After (Ready High):
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+|-|	PID:   4 Command: D State:[  R ]
+\_ [18/18] - Test Completed Normally
+
+Test 15 [ 9 points]:
+|-Testing op_select on a Ready High List with a CRITICAL node in the middle.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: No, Critical: Yes) with Reference op_new_process()
+|-[Ref] Generating Process D (PID: 4, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 2, State: [  R ]) with Reference op_create()
+|-[Ref] Inserting Process C (PID: 3, State: [C R ]) with Reference op_create()
+|-[Ref] Inserting Process D (PID: 4, State: [  R ]) with Reference op_create()
+|-Before (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   3 Command: C State:[C R ]
+|-|	PID:   4 Command: D State:[  R ]
+|-Selecting from Ready Queue - High with op_select()
+|-After (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   4 Command: D State:[  R ]
+\_ [ 9/ 9] - Test Completed Normally
+
+Test 16 [18 points]:
+|-Testing op_select on a One Item Ready Low List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-Before (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+|-Selecting from Ready Queue - Low with op_select()
+|-After (Ready Low):
+|-|	None
+\_ [18/18] - Test Completed Normally
+
+Test 17 [ 5 points]:
+|-Testing op_promote on an Empty Ready Low List.
+|-Before (Ready Low):
+|-|	None
+|-Promoting Processes with op_promote_processes()
+|-After (Ready Low):
+|-|	None
+\_ [ 5/ 5] - Test Completed Normally
+
+Test 18 [10 points]:
+|-Testing op_promote_processes, promote only item in Ready Low List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-Aging A to 4 before running Promote.
+|-Before (Ready High):
+|-|	None
+|-Before (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+|-Promoting Processes with op_promote_processes()
+|-After (Ready High):
+|-|	PID:   1 Command: A State:[ LR ]
+|-After (Ready Low):
+|-|	None
+\_ [10/10] - Test Completed Normally
+
+Test 19 [10 points]:
+|-Testing op_promote_processes, promote one of many items in Ready Low List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 2, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process C (PID: 3, State: [ LR ]) with Reference op_create()
+|-Aging B to 4 before running Promote.
+|-Before (Ready High):
+|-|	None
+|-Before (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+|-|	PID:   2 Command: B State:[ LR ]
+|-|	PID:   3 Command: C State:[ LR ]
+|-Promoting Processes with op_promote_processes()
+|-After (Ready High):
+|-|	PID:   2 Command: B State:[ LR ]
+|-After (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+|-|	PID:   3 Command: C State:[ LR ]
+\_ [10/10] - Test Completed Normally
+
+Test 20 [10 points]:
+|-Testing op_promote_processes, promote many items in Ready Low List.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 2, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process C (PID: 3, State: [ LR ]) with Reference op_create()
+|-Aging A and B to 4 before running Promote.
+|-Before (Ready High):
+|-|	None
+|-Before (Ready Low):
+|-|	PID:   1 Command: A State:[ LR ]
+|-|	PID:   2 Command: B State:[ LR ]
+|-|	PID:   3 Command: C State:[ LR ]
+|-Promoting Processes with op_promote_processes()
+|-After (Ready High):
+|-|	PID:   1 Command: A State:[ LR ]
+|-After (Ready Low):
+|-|	PID:   2 Command: B State:[ LR ]
+|-|	PID:   3 Command: C State:[ LR ]
+|-[Issue]-B should be in the Ready High List
+|-[Issue]-B should not be in the Ready Low List
+|-[Issue]-Ready Low List head should be C.
+|-[Issue]-A's next should be B.
+|-[Issue]-B's age should be 0 in the Ready High List
+\_ [ 5/10] - Test Completed Normally
+
+Test 21 [ 5 points]:
+|-Testing op_get_count on the Ready High Queue.
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 2, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 3, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-Before (Ready High):
+|-|	None
+|-Getting size of the Ready High Queue with op_get_count()
+|-[Ref] Inserting Process A (PID: 1, State: [  R ]) with Reference op_create()
+|-During (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-Getting size of the Ready High Queue with op_get_count()
+|-[Ref] Inserting Process B (PID: 2, State: [  R ]) with Reference op_create()
+|-During (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   2 Command: B State:[  R ]
+|-Getting size of the Ready High Queue with op_get_count()
+|-[Ref] Inserting Process C (PID: 3, State: [  R ]) with Reference op_create()
+|-During (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   2 Command: B State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+|-Getting size of the Ready High Queue with op_get_count()
+|-[Ref] Terminating Process with PID: 2 with Reference op_terminated()
+|-During (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-|	PID:   3 Command: C State:[  R ]
+|-Getting size of the Ready High Queue with op_get_count()
+|-[Ref] Terminating Process with PID: 3 with Reference op_terminated()
+|-During (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+|-Getting size of the Ready High Queue with op_get_count()
+|-After (Ready High):
+|-|	PID:   1 Command: A State:[  R ]
+\_ [ 5/ 5] - Test Completed Normally
+
+Test 22 [ 1 points]:
+|-Testing op_add without calling op_create (NULL schedule test).
+|-[Ref] Generating Process A (PID: 1, Low-Priority: No, Critical: No) with Reference op_new_process()
+|-Inserting Process A (PID: 1, State: [  R ]) with op_create()
+\_ [ 1/ 1] - Test Completed Normally
+
+Test 23 [ 1 points]:
+|-Testing op_terminated with a non-existent PID (-1 return test).
+|-[Ref] Generating Process A (PID: 1, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process B (PID: 10, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Generating Process C (PID: 100, Low-Priority: Yes, Critical: No) with Reference op_new_process()
+|-[Ref] Inserting Process A (PID: 1, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process B (PID: 10, State: [ LR ]) with Reference op_create()
+|-[Ref] Inserting Process C (PID: 100, State: [ LR ]) with Reference op_create()
+|-Terminating Process with PID: 20 with op_terminated()
+\_ [ 1/ 1] - Test Completed Normally
+
+Test 24 [ 1 points]:
+|-Testing op_exited with a non-existent node (-1 return test).
+|-Quit run for a NULL Process with op_exited()
+\_ [ 1/ 1] - Test Completed Normally
+
+Test 25 [ 1 points]:
+|-Testing op_promote_processes with empty Low Queue (0 return test).
+|-Promoting Processes with op_promote_processes()
+\_ [ 1/ 1] - Test Completed Normally
+
+Test 26 [ 1 points]:
+|-Testing op_select_low with empty Low Queue (NULL return test).
+|-Selecting from Ready Queue - Low with op_select()
+\_ [ 1/ 1] - Test Completed Normally
+
+Test 27 [ 5 points]:
+|-VALGRIND Test for Memory Leaks
+|-Executing Valgrind on a Sample Run.
+|-Calling op_create()
+|-Creating Process: a (PID = 1, Priority = 128, Critical = No)
+|-Inserting Process a in Ready List
+|-Creating Process: b (PID = 2, Priority = 128, Critical = No)
+|-Inserting Process b in Ready List
+|-Creating Process: c (PID = 3, Priority = 128, Critical = No)
+|-Inserting Process c in Ready List
+|-Selecting Process a from the High Ready List
+|-Inserting Process a back to Ready List
+|-Calling op_deallocate()
+\_ [ 5/ 5] - Test Completed Normally
+--------------------------
+Automated Testing Results:
+*(Raw Score [231.00/255.00] Multiplied by 0.31 to be in range [0.0,80.0])
+Score: [73.00/80.00] 

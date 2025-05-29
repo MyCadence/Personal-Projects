@@ -1,0 +1,508 @@
+Script started on 2022-10-09 22:42:55-04:00
+bash-4.4$ uname -a
+Linux zeus-2.cec.gmu.edu 4.18.0-348.23.1.el8_5.x86_64 #1 SMP Tue Apr 12 11:20:32 EDT 2022 x86_64 x86_64 x86_64 GNU/Linux
+bash-4.4$ ls
+Makefile  p1_abirhan2_214.c  p1_abirhan2_typescript
+bash-4.4$ make[K[K[K[Kcat p1_abirhan2_214.c 
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+int is_valid_name(char *name);
+int is_valid_seed();
+int calculate_net_height();
+int throw_ball(int net_height);
+int game_logic(int calcInches, char *name);
+int main(){
+	char name[100];	
+	int calcInches = 0;
+	int playerWin = 0;
+	int cpuWin = 0;
+	int gameCount = 0;
+	int seed = 0;
+	printf("Welcome to the Gehntoo game\n");
+	
+	while(is_valid_name(name)==0){}
+
+	
+	seed = is_valid_seed();
+	printf("Seed value to use is %d\n",seed);
+	srand(seed);/*generates a new pseudocode of random numbers*/
+	
+	
+		
+	while(calcInches==0){
+		calcInches=calculate_net_height();
+	}/*repeat until a valid ft and in combination is produced, then calculate total inches*/
+	printf("Height of the net: %d inches\n",calcInches);
+	name[strcspn(name, "\n")] = 0;
+
+	
+	while(0<1){
+		int result = game_logic(calcInches, name);
+		char inpStr[10];
+		char answer[10];
+		if(result==1)
+			playerWin++;
+		if(result==0)
+			cpuWin++;
+		gameCount++;
+		printf("Would you like to play again %s? Type Y or N: ",name);
+		fgets(inpStr, 10, stdin);
+		sscanf(inpStr, "%s", answer);
+		if(strcmp(answer,"Y")==0)
+			continue;
+		if(strcmp(answer,"N")==0){
+			printf("%s chose not to play again. Thanks for playing!\n",name);
+			printf("Invalid input! Please enter 'Y' or 'N'! Try again.\n");
+			break;
+		}
+		if(gameCount==2)
+			break;
+	}/*game loops until 3 games are played or user refuses to continue to play any longer*/
+	printf("Printing out game statistics now:\n");
+	printf("\t%s won a total of %d time(s)\n",name,playerWin);
+	printf("\tComputer won a total of %d time(s)\n",cpuWin);
+	return 0;/*the program is done*/
+}
+
+int game_logic(int calcInches, char *name){
+	int player = 75;
+	int cpu = 75;
+	printf("Each player is starting with 75 points\n");
+	while(player>0&&cpu>0){
+
+	/*player turn*/
+	char inpStr[10];
+	int bet = 0;
+	int throw = throw_ball(calcInches);
+	while(bet<1||bet>11||bet>player){
+		printf("%s's turn. How much would you like to bet towards your throw? ", name);
+		fgets(inpStr, 10, stdin);
+		sscanf(inpStr, "%d", &bet);
+		if(bet<1||bet>11||bet>player)
+			printf("Please enter a bet from [1-11] and/or less than the current total points available\n");
+	}
+	printf("\tbet %d points\n",bet);
+	if(throw>calcInches){
+		printf("\tBall height: %d inches, the ball is over the net\n",throw);
+		player -= bet;
+		printf("\tDeducting %d points\n",bet);
+		printf("\t%s now has %d points\n", name, player);
+	}/*throw is greater than the net*/
+	if(throw<=calcInches){
+		if(throw>calcInches/2){
+			printf("\tBall height: %d inches, the ball is below the net\n",throw);
+			player+=2;/*cannot rethrow*/
+			printf("\tAdding 2 points\n");
+			printf("\t%s now has %d points\n", name, player);
+		}
+		else{
+			char inpStr[10];
+			char answer[10];
+			printf("\tBall height: %d inches, Throw again? Type Y or N: ",throw);
+			
+			fgets(inpStr, 10, stdin);
+			sscanf(inpStr, "%s", answer);
+			if(strcmp(answer,"Y")==0){/*if yes rethrow*/
+				throw = throw_ball(calcInches);
+				if(throw>calcInches){
+					printf("\tBall height: %d inches, the ball is over the net\n",throw);
+					player -= (bet);/*success take off bet number of points and the 2 points*/
+					printf("\tDeducting %d points\n",bet);
+					printf("\t%s now has %d points\n",name,player);
+				}
+				if(throw<=calcInches){
+					player +=4;/*failure put 4 points on the player's total*/
+					printf("\tBall height: %d inches, the ball is below the net\n",throw);
+					printf("\tAdding 4 points\n");
+					printf("\t%s now has %d points\n",name,player);
+				}
+			}
+			if(strcmp(answer,"N")==0)/*if no rethrow*/
+				player+=(bet);/*their bet is added on top of player's total*/
+		}/*if throw is less than half the net height, you can ask for a rethrow...*/
+		
+	}/*throw is less than or equal to the net*/
+
+	/*computer's turn*/
+	printf("Computer's turn\n");
+	throw = throw_ball(calcInches);
+	if(throw>calcInches){/*computer throws over net*/
+		cpu-=9;
+		printf("\tBall height: %d inches, the ball is over the net\n",throw);
+		printf("\tDeducting 9 points\n");
+		printf("\tComputer now has %d points\n",cpu);
+	}
+
+	if(throw<=calcInches){
+		if(throw>=calcInches/2){
+			cpu+=4;
+			printf("\tBall height: %d inches, the ball is below the net\n",throw);
+			printf("\tAdding 4 points\n");
+			printf("\tComputer now has %d points\n",cpu);
+		}/*doesn't meet criteria to rethrow*/
+
+		if(throw<calcInches/2){
+			printf("\tBall height: %d inches, the ball is below the net, throwing once more\n",throw);
+			throw = throw_ball(calcInches);
+			if(throw<=calcInches){
+				cpu+=6;
+				printf("\tBall height: %d inches, the ball is below the net\n",throw);
+				printf("\tAdding 6 points\n");
+				printf("\tComputer now has %d points\n", cpu);
+			}
+			if(throw>calcInches){
+				cpu-=7;
+				printf("\tBall height: %d inches, the ball is over the net\n",throw);
+				printf("\tDeducting 7 points\n");
+				printf("\tComputer now has %d points\n",cpu);
+
+			}
+		}
+	}/*computer throws under or at the net*/
+	}/*iteration*/
+	if(player<=0){
+		printf("%s has won the current game, congratulations!\n",name);
+		return 1;/*player returns 1 if won*/
+	}
+	if(cpu<=0){
+		printf("The Computer has won the current game, better luck next time!\n");
+		return 0;/*cpu returns 0 if won*/
+	}
+	return 1;
+}
+
+int throw_ball(int net_height){
+
+	int num = (rand() % (net_height+17));
+	return num;
+}
+
+int calculate_net_height(){
+	char inpStr[100];
+	char inches[10];
+	char feet[10];
+	int ft;
+	int in;
+	char outpStr[100];
+	int i;
+	int counter=0;
+	int space=0;
+	int number=0;
+	printf("Please enter the height of the net in feet and inches [xxft xxin] where xx must be [1-99] ");
+	fgets(inpStr, 100, stdin);
+	for(i = 0; i<strlen(inpStr); i++){
+		if(inpStr[i]>='0'&&inpStr[i]<='9'&&number==0)
+			number = 1;
+		if(number==1||number==2){
+			if(space==0&&(inpStr[i]==' '||((inpStr[i]>='A'&&inpStr[i]<='Z')||(inpStr[i]>='a'&&inpStr[i]<='z'))))
+				space = 1;
+			if(space==1&&(inpStr[i]>='0'&&inpStr[i]<='9'))
+				number = 2;
+			if(space==1&&number==2&&(inpStr[i]==' '||((inpStr[i]>='A'&&inpStr[i]<='Z')||(inpStr[i]>='a'&&inpStr[i]<='z'))))
+				space = 2;
+			if(space==2&&number==2&&(inpStr[i]>='0'&&inpStr[i]<='9')){
+				printf("Invalid input! Please try again.\n");
+				return 0;
+			}
+		}
+	}/*check if there are space characters that affect the validity of the height - condition 1*/
+	for(i=0; i<strlen(inpStr);i++){
+		if(inpStr[i]!=' '){
+			outpStr[counter] = inpStr[i];
+			counter++;
+			if(inpStr[i]=='t'||inpStr[i]=='T'){
+				outpStr[counter] = ' ';
+				counter++;
+			}
+		}
+	}/*format the inputted string into a computer friendly string - ex: 23ft 12in*/
+	sscanf(outpStr, " %d %s %d %s", &ft, feet, &in, inches);
+	if(!((ft>=1&&ft<=99)&&(in>=1&&in<=99))){
+		printf("Invalid range! Make sure for both inches and feet that the net's height is between 1-99.\n");
+		
+		return 0;
+	}/*height is not between 1-99 for either or both feet and inches*/
+	if(!(strcmp(feet,"fT")==0||strcmp(feet,"Ft")==0||strcmp(feet,"ft")==0||strcmp(feet,"FT")==0)){
+		printf("Invalid input! Please try again.\n");
+		return 0;/*make sure the right letters are inputted for feet context*/
+	}
+	if(!(strcmp(inches,"iN")==0||strcmp(inches,"In")==0||strcmp(inches,"in")==0||strcmp(inches,"IN")==0)){
+		printf("Invalid input! Please try again.\n");
+		return 0;/*make sure the right letters are inputted for inches context*/
+	}
+	return (ft*12)+in;/*all conditions passed, return true (1)*/
+}
+
+int is_valid_seed(){
+	int seedVal=0;
+	printf("Enter a seed value to use in the range of [1-99999] ");	
+	while(seedVal<1||seedVal>99999){
+		int space = 0;
+		int number = 0;
+		char inpStr[7];
+		int makeFalse = 0;
+		int i;
+		fgets(inpStr,7,stdin);/*before storing it at the address of our int seedVal, we must pass conditions in its String form*/
+		
+		for(i=0; i<strlen(inpStr);i++){
+			if(!((inpStr[i]>='0'&&inpStr[i]<='9')||inpStr[i]==' '||inpStr[i]=='\n'||inpStr[i]=='\0')){
+				makeFalse = 100000;
+			}
+		}/*check if input has any non numbers - condition 1*/
+
+		
+		for(i = 0; i<strlen(inpStr); i++){
+			if(inpStr[i]>='0'&&inpStr[i]<='9')
+				number = 1;
+			if(number==1){
+				if(space==0&&inpStr[i]==' ')
+					space = 1;
+				if(space==1&&(inpStr[i]>='0'&&inpStr[i]<='9'))
+					makeFalse = 100000;
+			}
+		}/*check if there are space characters that affect the validity of the seed - condition 2*/
+
+		sscanf(inpStr,"%d",&seedVal);
+		seedVal+=makeFalse;/*make it out of the range if it did not pass all conditions of a valid seed*/
+		if(seedVal<1||seedVal>99999)
+			printf("Invalid seed, please enter a new seed value in the range [1-99999] ");
+	}/*iteration*/
+	return seedVal;/*exit with the valid seed*/
+}
+
+int is_valid_name(char *name){
+	int letter=0;
+	int i;	
+	printf("Enter your name ");
+	fgets(name,100,stdin);
+	if(!(strlen(name)<=8&&strlen(name)>0)){
+		printf("The name entered is invalid, please try again.\n");
+		return 0;
+	}/*if size of name exceeds 7 characters return false (0) - condition 1*/
+	for(i=(int)strlen(name); i>=0; i--){
+		if(!((name[i]>='A'&&name[i]<='Z')||(name[i]>='a'&&name[i]<='z')||name[i]==' '||name[i]=='\0'||name[i]=='\n')){
+			printf("The name entered is invalid, please try again.\n");
+			return 0;
+		}
+		if((name[i]>='A'&&name[i]<='Z')||(name[i]>='a'&&name[i]<='z')){
+			letter = 1;
+		}/*letter found, set letter to 1*/
+	}/*if name doesn't include only space, characters, null terminator, or new line character return false - condition 2*/
+	if(letter==0){
+		printf("The name entered is invalid, please try again.\n");
+		return 0;
+	}/*if there are no letters found return false (0) - condition 3*/
+	return 1;/*exit the function and return true (1)*/
+}
+bash-4.4$ make
+gcc p1_abirhan2_214.c -o p1_abirhan2_214 -g -Wall -std=c89 -pedantic-errors
+bash-4.4$ touch input1.txt
+bash-4.4$ ls
+input1.txt  Makefile  p1_abirhan2_214  p1_abirhan2_214.c  p1_abirhan2_typescript
+bash-4.4$ cat input1.txt 
+bash-4.4$ vim input1.txt 
+[?2004h[?1049h[22;0;0t[?1h=[?2004h[1;46r[?12h[?12l[27m[23m[29m[m[H[2J[?25l[46;1H"input1.txt" 0L, 0C[?2004l[?2004h[?2004l[?2004h[?2004l[?2004h[?2004l[?2004h[?2004h[?2004l[?2004h[?2004l[?2004h[?2004l[?2004h[?2004l[?2004h[?2004h[2;1H▽[6n[2;1H  [1;1H[>c]10;?]11;?[2;1H[94m~                                                                                                                                                                [3;1H~                                                                                                                                                                [4;1H~                                                                                                                                                                [5;1H~                                                                                                                                                                [6;1H~                                                                                                                                                                [7;1H~                                                                                                                                                                [8;1H~                                                                                                                                                                [9;1H~                                                                                                                                                                [10;1H~                                                                                                                                                                [11;1H~                                                                                                                                                                [12;1H~                                                                                                                                                                [13;1H~                                                                                                                                                                [14;1H~                                                                                                                                                                [15;1H~                                                                                                                                                                [16;1H~                                                                                                                                                                [17;1H~                                                                                                                                                                [18;1H~                                                                                                                                                                [19;1H~                                                                                                                                                                [20;1H~                                                                                                                                                                [21;1H~                                                                                                                                                                [22;1H~                                                                                                                                                                [23;1H~                                                                                                                                                                [24;1H~                                                                                                                                                                [25;1H~                                                                                                                                                                [26;1H~                                                                                                                                                                [27;1H~                                                                                                                                                                [28;1H~                                                                                                                                                                [29;1H~                                                                                                                                                                [30;1H~                                                                                                                                                                [31;1H~                                                                                                                                                                [32;1H~                                                                                                                                                                [33;1H~                                                                                                                                                                [34;1H~                                                                                                                                                                [35;1H~                                                                                                                                                                [36;1H~                                                                                                                                                                [37;1H~                                                                                                                                                                [38;1H~                                                                                                                                                                [39;1H~                                                                                                                                                                [40;1H~                                                                                                                                                                [41;1H~                                                                                                                                                                [42;1H~                                                                                                                                                                [43;1H~                                                                                                                                                                [44;1H~                                                                                                                                                                [45;1H~                                                                                                                                                                [m[46;144H0,0-1[9CAll[1;1H[?25h[?25l[46;134H^V[1;1H[46;134H1x1[1;1H[46;1H[1m-- VISUAL BLOCK --[m[46;19H[K[46;134H1x1[1;1H[46;144H0,0-1[9CAll[1;1H[?25h[?25l[46;134Hp  [1;1H[46;134H [2;9H        printf("%s's turn. How much would you like to bet towards your throw? ", name);[2;88H[K[46;1H[K[46;144H2,2-9[9CAll[2;9H[?25h[?25l[46;134Hu[2;9H[46;1H2 fewer lines; before #1  2 seconds ago[46;134H[K[1;1H
+[94m~                                                                                                                                                                [m[46;144H0,0-1[9CAll[1;1H[?25h[?25l[46;134Hi[1;1H[46;134H [1;1H[46;1H[1m-- INSERT --[m[46;13H[K[46;144H0,1[11CAll[1;1H[?25h[34m^[?25l[m[46;134H^V[1;1H[?25h[?25l[46;136H^?[1;1H [46;134H    [1;1H[34m^?[m[46;144H1,2-3[1;3H[?25h[?25l[1;1H[K[46;146H1  [1;1H[?25h[?25lJ[46;146H2[1;2H[?25h[?25li[46;146H3[1;3H[?25h[?25lm[46;146H4[1;4H[?25h[?25l[2;1H[K[46;144H2,1[2;1H[?25h[?25l1[46;146H2[2;2H[?25h[?25l4[46;146H3[2;3H[?25h[?25l3[46;146H4[2;4H[?25h[?25ld[46;146H5[2;5H[?25h[?25l[3;1H[K[46;144H3,1[3;1H[?25h[?25l1[46;146H2[3;2H[?25h[?25l2[46;146H3[3;3H[?25h[?25l5[46;146H4[3;4H[?25h[?25l6[46;146H5[3;5H[?25h[?25l3[46;146H6[3;6H[?25h[?25l[4;1H[K[46;144H4,1[4;1H[?25h[?25l3[46;146H2[4;2H[?25h[?25lf[46;146H3[4;3H[?25h[?25lt[46;146H4[4;4H[?25h[?25l[46;146H5[4;5H[?25h[?25l3[46;146H6[4;6H[?25h[?25li[46;146H7[4;7H[?25h[?25ln[46;146H8[4;8H[?25h[?25l[5;1H[K[46;144H5,1[5;1H[?25h[?25l1[46;146H2[5;2H[?25h[?25l1[46;146H3[5;3H[?25h[?25l[6;1H[K[46;144H6,1[6;1H[?25h[?25l1[46;146H2[6;2H[?25h[?25l1[46;146H3[6;3H[?25h[?25l[7;1H[K[46;144H7,1[7;1H[?25h[?25l1[46;146H2[7;2H[?25h[?25l1[46;146H3[7;3H[?25h[?25l[8;1H[K[46;144H8,1[8;1H[?25h[?25lY[46;146H2[8;2H[?25h[?25l[9;1H[K[46;144H9,1[9;1H[?25h[?25l1[46;146H2[9;2H[?25h[?25l1[46;146H3[9;3H[?25h[?25l[10;1H[K[46;144H10,1[10;1H[?25h[?25lY[46;147H2[10;2H[?25h[?25l[11;1H[K[46;145H1,1[11;1H[?25h[?25l1[46;147H2[11;2H[?25h[?25l1[46;147H3[11;3H[?25h[?25l[12;1H[K[46;145H2,1[12;1H[?25h[?25lY[46;147H2[12;2H[?25h[?25l[13;1H[K[46;145H3,1[13;1H[?25h[?25l1[46;147H2[13;2H[?25h[?25l1[46;147H3[13;3H[?25h[?25l[14;1H[K[46;145H4,1[14;1H[?25h[?25lY[46;147H2[14;2H[?25h[?25l[15;1H[K[46;145H5,1[15;1H[?25h[?25l1[46;147H2[15;2H[?25h[?25l1[46;147H3[15;3H[?25h[?25l[16;1H[K[46;145H6,1[16;1H[?25h[?25l1[46;147H2[16;2H[?25h[?25l1[46;147H3[16;3H[?25h[?25l[17;1H[K[46;145H7,1[17;1H[?25h[?25l1[46;147H2[17;2H[?25h[?25l1[46;147H3[17;3H[?25h[?25l[18;1H[K[46;145H8,1[18;1H[?25h[?25lY[46;147H2[18;2H[?25h[?25l[19;1H[K[46;145H9,1[19;1H[?25h[?25l1[46;147H2[19;2H[?25h[?25l1[46;147H3[19;3H[?25h[?25l[20;1H[K[46;144H20,1[20;1H[?25h[?25lY[46;147H2[20;2H[?25h[?25l[21;1H[K[46;145H1,1[21;1H[?25h[?25l1[46;147H2[21;2H[?25h[?25l1[46;147H3[21;3H[?25h[?25l[22;1H[K[46;145H2,1[22;1H[?25h[?25l1[46;147H2[22;2H[?25h[?25l1[46;147H3[22;3H[?25h[?25l[23;1H[K[46;145H3,1[23;1H[?25h[?25l1[46;147H2[23;2H[?25h[?25l1[46;147H3[23;3H[?25h[?25l[24;1H[K[46;145H4,1[24;1H[?25h[?25l1[46;147H2[24;2H[?25h[?25l1[46;147H3[24;3H[?25h[?25l[25;1H[K[46;145H5,1[25;1H[?25h[?25l1[46;147H2[25;2H[?25h[?25l1[46;147H3[25;3H[?25h[?25l[26;1H[K[46;145H6,1[26;1H[?25h[?25lY[46;147H2[26;2H[?25h[?25l[27;1H[K[46;145H7,1[27;1H[?25h[?25l1[46;147H2[27;2H[?25h[?25l1[46;147H3[27;3H[?25h[?25l[28;1H[K[46;145H8,1[28;1H[?25h[?25lY[46;147H2[28;2H[?25h[?25l[29;1H[K[46;145H9,1[29;1H[?25h[?25l1[46;147H2[29;2H[?25h[?25l1[46;147H3[29;3H[?25h[?25l[30;1H[K[46;144H30,1[30;1H[?25h[?25l1[46;147H2[30;2H[?25h[?25l1[46;147H3[30;3H[?25h[?25l[31;1H[K[46;145H1,1[31;1H[?25h[?25lY[46;147H2[31;2H[?25h[?25l[32;1H[K[46;145H2,1[32;1H[?25h[?25l1[46;147H2[32;2H[?25h[?25l1[46;147H3[32;3H[?25h[?25l[33;1H[K[46;145H3,1[33;1H[?25h[?25l1[46;147H2[33;2H[?25h[?25l1[46;147H3[33;3H[?25h[?25l[34;1H[K[46;145H4,1[34;1H[?25h[?25l1[46;147H2[34;2H[?25h[?25l1[46;147H3[34;3H[?25h[?25l[35;1H[K[46;145H5,1[35;1H[?25h[?25l1[46;147H2[35;2H[?25h[?25l1[46;147H3[35;3H[?25h[?25l[36;1H[K[46;145H6,1[36;1H[?25h[?25l1[46;147H2[36;2H[?25h[?25l1[46;147H3[36;3H[?25h[?25l[36;2H[K[46;147H2[36;2H[?25h[?25l[36;1H[K[46;147H1[36;1H[?25h[?25l3[46;147H2[36;2H[?25h[?25l[37;1H[K[46;145H7,1[37;1H[?25h[?25lN[46;147H2[37;2H[?25h[?25l[38;1H[K[46;145H8,1[38;1H[?25h[?25l[94m~                                                                                                                                                                [m[46;145H7,2[37;2H[?25h[46;1H[K[37;1H[?25l[46;134H^[[37;1H[46;134H  [37;2H[46;144H37,1[10CAll[37;1H[?25h[?25l[46;134H:[37;1H[46;134H[K[46;1H:[?2004h[?25hw[?25l[?25hq[?25l[?25h[?25l[?2004l"input1.txt" 37L, 111C written
+[?2004l[?1l>[?25h[?1049l[23;0;0tbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ [Kbash-4.4$ p11-kit [K[K[K[K[K[K[K[Kp1_[K[K[K./p1_abirhan2_214 <input1.txt [1@ 
+Welcome to the Gehntoo game
+Enter your name Enter a seed value to use in the range of [1-99999] Invalid seed, please enter a new seed value in the range [1-99999] Seed value to use is 12563
+Please enter the height of the net in feet and inches [xxft xxin] where xx must be [1-99] Height of the net: 39 inches
+Each player is starting with 75 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 53 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 64 points
+Computer's turn
+	Ball height: 14 inches, the ball is below the net, throwing once more
+	Ball height: 25 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 81 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 48 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 53 points
+Computer's turn
+	Ball height: 13 inches, the ball is below the net, throwing once more
+	Ball height: 10 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 87 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 5 inches, Throw again? Type Y or N: 	Ball height: 3 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 57 points
+Computer's turn
+	Ball height: 47 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 78 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 18 inches, Throw again? Type Y or N: 	Ball height: 42 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 46 points
+Computer's turn
+	Ball height: 21 inches, the ball is below the net
+	Adding 4 points
+	Computer now has 82 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 12 inches, Throw again? Type Y or N: 	Ball height: 20 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 50 points
+Computer's turn
+	Ball height: 5 inches, the ball is below the net, throwing once more
+	Ball height: 40 inches, the ball is over the net
+	Deducting 7 points
+	Computer now has 75 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 19 inches, Throw again? Type Y or N: 	Ball height: 18 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 54 points
+Computer's turn
+	Ball height: 15 inches, the ball is below the net, throwing once more
+	Ball height: 29 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 81 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 50 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 43 points
+Computer's turn
+	Ball height: 17 inches, the ball is below the net, throwing once more
+	Ball height: 19 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 87 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 51 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 32 points
+Computer's turn
+	Ball height: 7 inches, the ball is below the net, throwing once more
+	Ball height: 14 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 93 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 10 inches, Throw again? Type Y or N: 	Ball height: 10 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 36 points
+Computer's turn
+	Ball height: 35 inches, the ball is below the net
+	Adding 4 points
+	Computer now has 97 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 7 inches, Throw again? Type Y or N: 	Ball height: 9 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 40 points
+Computer's turn
+	Ball height: 32 inches, the ball is below the net
+	Adding 4 points
+	Computer now has 101 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 22 inches, the ball is below the net
+	Adding 2 points
+	Jim now has 42 points
+Computer's turn
+	Ball height: 18 inches, the ball is below the net, throwing once more
+	Ball height: 8 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 107 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 35 inches, the ball is below the net
+	Adding 2 points
+	Jim now has 44 points
+Computer's turn
+	Ball height: 13 inches, the ball is below the net, throwing once more
+	Ball height: 53 inches, the ball is over the net
+	Deducting 7 points
+	Computer now has 100 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 22 inches, the ball is below the net
+	Adding 2 points
+	Jim now has 46 points
+Computer's turn
+	Ball height: 44 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 91 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 55 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 35 points
+Computer's turn
+	Ball height: 49 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 82 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 9 inches, Throw again? Type Y or N: 	Ball height: 12 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 39 points
+Computer's turn
+	Ball height: 53 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 73 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 14 inches, Throw again? Type Y or N: 	Ball height: 36 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 43 points
+Computer's turn
+	Ball height: 16 inches, the ball is below the net, throwing once more
+	Ball height: 16 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 79 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 51 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 32 points
+Computer's turn
+	Ball height: 29 inches, the ball is below the net
+	Adding 4 points
+	Computer now has 83 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 10 inches, Throw again? Type Y or N: 	Ball height: 13 inches, the ball is below the net
+	Adding 4 points
+	Jim now has 36 points
+Computer's turn
+	Ball height: 49 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 74 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 46 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 25 points
+Computer's turn
+	Ball height: 4 inches, the ball is below the net, throwing once more
+	Ball height: 7 inches, the ball is below the net
+	Adding 6 points
+	Computer now has 80 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 40 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 14 points
+Computer's turn
+	Ball height: 55 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 71 points
+Jim's turn. How much would you like to bet towards your throw? 	bet 11 points
+	Ball height: 42 inches, the ball is over the net
+	Deducting 11 points
+	Jim now has 3 points
+Computer's turn
+	Ball height: 47 inches, the ball is over the net
+	Deducting 9 points
+	Computer now has 62 points
+Jim's turn. How much would you like to bet towards your throw? Please enter a bet from [1-11] and/or less than the current total points available
+Jim's turn. How much would you like to bet towards your throw? 	bet 3 points
+	Ball height: 48 inches, the ball is over the net
+	Deducting 3 points
+	Jim now has 0 points
+Computer's turn
+	Ball height: 3 inches, the ball is below the net, throwing once more
+	Ball height: 53 inches, the ball is over the net
+	Deducting 7 points
+	Computer now has 55 points
+Jim has won the current game, congratulations!
+Would you like to play again Jim? Type Y or N: Jim chose not to play again. Thanks for playing!
+Invalid input! Please enter 'Y' or 'N'! Try again.
+Printing out game statistics now:
+	Jim won a total of 1 time(s)
+	Computer won a total of 0 time(s)
+bash-4.4$ exit
+
+Script done on 2022-10-09 22:50:14-04:00

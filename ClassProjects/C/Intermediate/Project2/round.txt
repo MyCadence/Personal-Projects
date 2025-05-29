@@ -1,0 +1,68 @@
+how to round in project 2:
+-check if it's roundable
+	+check if it loses a value greater than 0 past a certain point
+
+example:
+10.25
+.25 = 1/4
+1010.01
+1.01001 (shift to the right 3 times)
+E = 3
+
+fraction (before shifting in binary)
+0100 0000 0000 0000 0000 0000 0000 0000 0000 = 0x40000000
+
+1.shift frac E (in this case 3) times to the right
+
+0000 1000 0000 0000 0000 0000 0000 0000 0000 = 0x08000000
+
+0000 0000 1111 1111 1111 1111 1111 1111 1111 = 0x00ffffff
+
+2.(mask) with this to see if any bits have been left out then that means it should be rounded
+
+
+how to round procedure:
+
+1. shift frac e times
+
+2. check the ninth bit from the left
+
+3. if it's 0 round down
+
+
+how to get the whole number and frac from 32 bits:
+find bias
+find E
+
+set M = 1.frac or just frac to a 32 unsigned bit
+0x000##000
+to make shifting to the right and left easier. doesn't lose any frac value and can shift -/+E times
+
+
+create an operation similar to shiftbits, for either negative E or positive E
+
+multiplying
+0x000#.##00
+
+product:
+3	5	= 15
+1.1^1 * 1.01^2
+
+0x00##.##00
+take just the fraction bits
+calculate the exp = bias+E (of the two E's)
+
+00000000000000000000000000000000
+        |        
+multiplication: shift the fraction bits into the whole
+
+get the fraction bits into whole numbers
+shift right until the first one value is reached
+retrieve each value's new E (when turning into whole num)
+
+ideas for adding: shift the two values so they're whole
+shift one or the other to match the other's Exponent
+adjust the mantissa back and get the signs right later/before
+
+for addition (neg + positive) send to subtraction
+as positive minus negative

@@ -1,0 +1,2 @@
+29 Jul 2022 5:24:03 GMT: Log 'PathClassLoader.txt' opened: 29 Jul 2022 5:24:03 GMT with name C:\Users\aaron\GMU Work\Comp Sci 211\2B1_abirhan2_P3\PathClassLoader.txt
+29 Jul 2022 5:24:03 GMT: Constructing PathClassLoader with parent sun.misc.Launcher$AppClassLoader@18b4aac2 and path '[C:\Users\aaron\GMU Work\Comp Sci 211\Project3\drjava-gmu.jar]'

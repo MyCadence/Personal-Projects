@@ -17,3 +17,4 @@
 -April. 25, 2025: Restructured Directories.  
 -May 18, 2025: Initialized personal site through Github Pages.  
 -May 26, 2025: Deployed Angela Yu's CSS Assignments.  
+-May 29, 2025: Migrated school projects into repo and removed novice projects.  
