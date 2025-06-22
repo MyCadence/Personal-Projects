@@ -18,3 +18,4 @@
 -May 18, 2025: Initialized personal site through Github Pages.  
 -May 26, 2025: Deployed Angela Yu's CSS Assignments.  
 -May 29, 2025: Migrated school projects into repo and removed novice projects.  
+-June 22, 2025: Pulled AI projects from college courses (NLP and Intro to AI).  
