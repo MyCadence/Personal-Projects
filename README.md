@@ -18,7 +18,7 @@ A full‑stack app for tracking and categorizing personal expenses.
 Capstone tool to search and summarize academic papers with high accuracy.
 - Integrated GPT‑4o‑mini and a keyword metadata processor for 500+ papers.
 - Automated extraction of authors, publication years, and citation information with ~95% accuracy.
-- [GitHub Repository](https://github.com/MyCadence/Gentopia-Mason)
+- [Gentopia-Mason Framework](https://github.com/MyCadence/Personal-Projects/tree/main/ClassProjects/AI%20Projects/NLP)
 
 ### **Interview Question Maze**
 *Tech: React, Flask, AWS (S3, EC2, DynamoDB)*  
@@ -29,20 +29,38 @@ Interactive game simulating tech interviews, with scoring and retry states.
 
 ---
 
-## 🚀 Additional Projects
+## 🧠 Additional Projects
 
-- **AI Log Analyzer** – NLP-based Windows event log summarizer.
-- **LLM Evaluation Visualizer** – Tool for comparing outputs across multiple language models.
-- **Static Web Pages Collection** – Includes Angela Yu's CSS assignments via GitHub Pages.
+### **Sarcasm Detection Model**
+*Tech: Python, Scikit-learn, NLP*  
+A machine learning pipeline that classifies sarcastic vs. non-sarcastic Reddit comments.
+- Preprocessed text data with tokenization, TF-IDF vectorization, and lemmatization
+- Trained and evaluated classifiers (Logistic Regression, SVM) on labeled sarcasm dataset
+- Achieved 85%+ validation accuracy using cross-validation and confusion matrix analysis
+
+### **JavaFX Authentication App**
+*Tech: Java, JavaFX, Maven*  
+Secure login GUI for a desktop application.
+- Implemented multi-module architecture with form validation and alert modals
+- Used Maven for dependency management and Git for version control
+- Wrote JUnit tests to verify login logic
+
+---
+
+## 🚀 Also Includes
+
+- **AI Log Analyzer** – NLP-based Windows event log summarizer  
+- **LLM Evaluation Visualizer** – Tool for comparing outputs across LLMs  
+- **Static Web Pages** – CSS assignments deployed via GitHub Pages
 
 ---
 
 ## 🧰 Technologies Used
 
 - **Languages**: Python, Java, JavaScript, HTML/CSS  
-- **Frameworks**: Django, Flask, React  
+- **Frameworks**: Django, Flask, React, JavaFX  
 - **Cloud / DevOps**: AWS (EC2, S3, Lambda, DynamoDB), GitHub Pages  
-- **Tools & Others**: SQLite, Git, GPT‑4o  
+- **Tools & Libraries**: SQLite, Git, GPT‑4o, Scikit-learn, Maven  
 
 ---
 
