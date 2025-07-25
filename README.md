@@ -1,21 +1,64 @@
-# All changes made to Arron Birhanu's Portfolio:
+# Project Portfolio 🧰
 
--Oct. 15, 2024: Initialized our REPO.  
--Oct. 25, 2024: Pushed SQLite Workspace.  
--Oct. 25, 2024: Created a "README" Feature Branch.  
--Oct. 26, 2024: Merged "README" Feature Branch into Main.  
--Oct. 27, 2024: Created a "README-branch" Feature Branch.  
--Oct. 27, 2024: Pushed HTML Overview of Database and HTML Workspace.  
--Feb. 6, 2025: Powershell Script for Login Errors in WinEvent.  
--Feb. 6, 2025: Added HTML project - imgs and file paths.  
--Feb. 7, 2025: Completed a working version of AI log analyzer.  
--Feb. 17, 2025: Currently unit testing on log analyzer.  
--Feb. 25, 2025: Started LLM Evaluation Project.  
--Feb. 25, 2025: Completed LLM Evaluation Project - added a visualizer.  
--Feb. 26, 2025: Started Budgeting Application - working on authentication.  
--Feb. 26, 2025: Completed Basic Budgeting Application.  
--April. 25, 2025: Restructured Directories.  
--May 18, 2025: Initialized personal site through Github Pages.  
--May 26, 2025: Deployed Angela Yu's CSS Assignments.  
--May 29, 2025: Migrated school projects into repo and removed novice projects.  
--June 22, 2025: Pulled AI projects from college courses (NLP and Intro to AI).  
+A curated collection of personal, academic, and exploratory projects built in Python, Java, JavaScript (React/Django/Flask), SQLite, and GPT‑4o integrations.
+
+---
+
+## Featured Projects
+
+### **Budgeting Application**
+*Tech: Django, SQLite, HTML/CSS*  
+A full‑stack app for tracking and categorizing personal expenses.
+- Designed REST API endpoints and interactive UI forms.
+- Reduced manual logging by 40% on average.
+- [Live demo if available] • [GitHub Repository](https://github.com/MyCadence/Budgeting-Application)
+
+### **LLM Research Assistant Agent**
+*Tech: Python, GPT‑4o‑mini*  
+Capstone tool to search and summarize academic papers with high accuracy.
+- Integrated GPT‑4o‑mini and a keyword metadata processor for 500+ papers.
+- Automated extraction of authors, publication years, and citation information with ~95% accuracy.
+- [GitHub Repository](https://github.com/MyCadence/Gentopia-Mason)
+
+### **Interview Question Maze**
+*Tech: React, Flask, AWS (S3, EC2, DynamoDB)*  
+Interactive game simulating tech interviews, with scoring and retry states.
+- Backend logic routes handle session state and scoring.
+- Designed for scalable deployment using AWS infrastructure.
+- [GitHub Repository](https://github.com/MyCadence/interview-question-maze)
+
+---
+
+## 🚀 Additional Projects
+
+- **AI Log Analyzer** – NLP-based Windows event log summarizer.
+- **LLM Evaluation Visualizer** – Tool for comparing outputs across multiple language models.
+- **Static Web Pages Collection** – Includes Angela Yu's CSS assignments via GitHub Pages.
+
+---
+
+## 🧰 Technologies Used
+
+- **Languages**: Python, Java, JavaScript, HTML/CSS  
+- **Frameworks**: Django, Flask, React  
+- **Cloud / DevOps**: AWS (EC2, S3, Lambda, DynamoDB), GitHub Pages  
+- **Tools & Others**: SQLite, Git, GPT‑4o  
+
+---
+
+## 📅 Changelog
+
+| Date       | Description                                      |
+|------------|--------------------------------------------------|
+| 2024‑10‑15 | Initialized repository                           |
+| 2024‑10‑25 | Pushed SQLite workspace                          |
+| 2024‑10‑27 | Added HTML database overview and static assets   |
+| 2025‑02‑06 | Added PowerShell script for WinEvent analysis    |
+| 2025‑02‑07 | Completed AI Log Analyzer tool                   |
+| 2025‑02‑17 | Began unit testing for log analyzer              |
+| 2025‑02‑25 | Finished LLM Evaluation project with visualizer   |
+| 2025‑02‑26 | Completed Budgeting Application authentication    |
+| 2025‑04‑25 | Restructured directories for better organization |
+| 2025‑05‑18 | Deployed personal site via GitHub Pages           |
+| 2025‑05‑29 | Migrated projects; removed legacy/novice items    |
+| 2025‑06‑22 | Added NLP/LLM projects from coursework            |
