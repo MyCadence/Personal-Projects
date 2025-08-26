@@ -44,6 +44,7 @@ Secure login GUI for a desktop application.
 - Implemented multi-module architecture with form validation and alert modals
 - Used Maven for dependency management and Git for version control
 - Wrote JUnit tests to verify login logic
+- [GitHub Repository](https://github.com/abirhan2/CS321/tree/main)
 
 ---
 
